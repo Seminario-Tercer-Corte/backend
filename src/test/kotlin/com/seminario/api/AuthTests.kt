@@ -110,7 +110,7 @@ class AuthTests {
         val user = UserDTO(
                 id = null,
                 name = "Test",
-                username = "test123",
+                username = "test452",
                 password = "user123",
                 picture = null,
                 job = "Lider",
@@ -140,9 +140,9 @@ class AuthTests {
     @Test
     fun profile() {
         val token = jwtTokenUtil!!.generateToken(User(
-                name = "test",
-                username = "test123",
-                password = "admin123",
+                name = "Test",
+                username = "test452",
+                password = "user123",
                 picture = null,
                 job = "Lider"
         ))
