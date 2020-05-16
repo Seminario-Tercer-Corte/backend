@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.seminario.api.dto.LoginRequest
+import com.seminario.api.dto.OrganizationDTO
+import com.seminario.api.dto.TeamDTO
 import com.seminario.api.dto.UserDTO
 import com.seminario.api.models.User
 import com.seminario.api.utils.Constants
@@ -78,7 +80,17 @@ class AuthTests {
                 name = "Test",
                 username = "test452",
                 password = "user123",
-                picture = null
+                picture = null,
+                job = "Lider",
+                team = TeamDTO(
+                        1,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        1
+                )
         )
         mvc!!.perform(
                 MockMvcRequestBuilders
@@ -100,7 +112,18 @@ class AuthTests {
                 name = "Test",
                 username = "test123",
                 password = "user123",
-                picture = null)
+                picture = null,
+                job = "Lider",
+                team = TeamDTO(
+                        1,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        1
+                )
+        )
         mvc!!.perform(
                 MockMvcRequestBuilders
                         .post("${Constants.URL_BASE_AUTH}/signup")
@@ -120,7 +143,8 @@ class AuthTests {
                 name = "test",
                 username = "test123",
                 password = "admin123",
-                picture = null
+                picture = null,
+                job = "Lider"
         ))
 
         mvc!!.perform(
@@ -141,7 +165,8 @@ class AuthTests {
                 name = "test",
                 username = "test12",
                 password = "admin123",
-                picture = null
+                picture = null,
+                job = "Lider"
         ))
 
         mvc!!.perform(
