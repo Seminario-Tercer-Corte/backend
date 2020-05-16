@@ -1,26 +1,13 @@
 package com.seminario.api.services
 
 import com.seminario.api.dto.TeamDTO
-import com.seminario.api.utils.JwtUtil
-import com.seminario.api.repositories.RoleRepository
-import com.seminario.api.repositories.UserRepository
-import com.seminario.api.models.User
-import com.seminario.api.models.Role
 import com.seminario.api.exceptions.AlreadyExists
 import com.seminario.api.exceptions.Database
-import com.seminario.api.exceptions.NotFound
-import com.seminario.api.models.Organization
 import com.seminario.api.models.Team
 import com.seminario.api.repositories.OrganizationRepository
 import com.seminario.api.repositories.TeamRepository
-import com.seminario.api.utils.Constants
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
-import java.lang.Exception
-import java.util.*
 
 @Service
 class TeamService {
@@ -61,7 +48,7 @@ class TeamService {
                 existingTeam.game = team.game
                 existingTeam.name = team.name
                 existingTeam.ubication = team.ubication
-                existingTeam.organization = organizationRepository!!.findById(team!!.organization_id!!).get()
+                existingTeam.organization = organizationRepository!!.findById(team.organization_id!!).get()
                 teamRepository!!.save(existingTeam)
             }.orElse(null)
         } catch (e: Exception) {
