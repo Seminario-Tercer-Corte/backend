@@ -16,7 +16,7 @@ import java.lang.Exception
 import java.util.*
 
 @Service
-class UserService: UserDetailsService {
+class UserService : UserDetailsService {
 
     @Autowired
     val userRepository: UserRepository? = null
@@ -38,6 +38,22 @@ class UserService: UserDetailsService {
     @Throws(NotFound::class)
     override fun loadUserByUsername(username: String): User {
         val user: Optional<User> = userByUsername(username)
+        if (!user.isPresent) {
+            throw NotFound(Constants.MESSAGE_USER_NOT_FOUND)
+        } else {
+            return user.get()
+        }
+    }
+
+    /**
+     * Load a user by id
+     * @param id: Long
+     * @throws NotFound
+     * @return User
+     */
+    @Throws(NotFound::class)
+    fun loadUserById(id: Long): User {
+        val user: Optional<User> = userById(id)
         if (!user.isPresent) {
             throw NotFound(Constants.MESSAGE_USER_NOT_FOUND)
         } else {
@@ -68,6 +84,21 @@ class UserService: UserDetailsService {
         }
     }
 
+    /**
+     * Update a new user
+     * @param user: User
+     * @throws AlreadyExists
+     * @throws Database
+     */
+    @Throws(Database::class, AlreadyExists::class)
+    fun update(user: User) {
+        try {
+            userRepository!!.save(user)
+        } catch (e: Exception) {
+            throw Database(e.message)
+        }
+    }
+
 
     /**
      * Display user information by token
@@ -80,7 +111,7 @@ class UserService: UserDetailsService {
         val jwt: String = token.substring(7)
         val username: String = jwtUtil!!.extractUsername(jwt)
         val user: Optional<User> = userByUsername(username)
-        if ( user.isPresent ) {
+        if (user.isPresent) {
             return user.get()
         } else {
             throw NotFound(Constants.MESSAGE_USER_NOT_FOUND)
@@ -94,10 +125,27 @@ class UserService: UserDetailsService {
      * @return Optional<User>
      */
     @Throws(Database::class)
-    private fun userByUsername( username: String ): Optional<User> {
+    private fun userByUsername(username: String): Optional<User> {
         val op: Optional<User>
         try {
             op = userRepository!!.findByUsername(username)
+        } catch (e: Exception) {
+            throw Database(e.message)
+        }
+        return op
+    }
+
+    /**
+     * Get user by id
+     * @param id: Long
+     * @throws Database
+     * @return Optional<User>
+     */
+    @Throws(Database::class)
+    private fun userById(id: Long): Optional<User> {
+        val op: Optional<User>
+        try {
+            op = userRepository!!.findById(id)
         } catch (e: Exception) {
             throw Database(e.message)
         }

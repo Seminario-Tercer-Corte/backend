@@ -1,5 +1,6 @@
 package com.seminario.api.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,13 +13,14 @@ import javax.persistence.*
 data class User(
         var name: String,
         var picture: String?,
+        var job: String?,
         private var username: String,
-        private var password: String
+        private var password: String,
+        @JsonIgnoreProperties("users")
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "team_id")
+        var team: Team? = null
 ) : UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0
 
     @ManyToMany
     @JoinTable(
@@ -27,6 +29,10 @@ data class User(
             inverseJoinColumns = [JoinColumn(name = "id_role")]
     )
     var roles: List<Role>? = null
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0
 
     /**
      * Get a list with permissions name.

@@ -1,10 +1,9 @@
 package com.seminario.api.controllers
 
-import com.seminario.api.dto.LoginRequest
-import com.seminario.api.dto.LoginResponse
-import com.seminario.api.dto.UserDTO
+import com.seminario.api.dto.*
 import com.seminario.api.exceptions.BadCredentials
 import com.seminario.api.models.User
+import com.seminario.api.services.TeamService
 import com.seminario.api.services.UserService
 import com.seminario.api.utils.Constants
 import com.seminario.api.utils.JwtUtil
@@ -25,6 +24,9 @@ class AuthController {
 
     @Autowired
     private val userService: UserService? = null
+
+    @Autowired
+    private val teamService: TeamService? = null
 
     @Autowired
     private val jwtTokenUtil: JwtUtil? = null
@@ -75,11 +77,30 @@ class AuthController {
         user.picture = "https://i1.wp.com/cdn.auth0.com/avatars/$initials.png"
         userService!!.save(User(
                 name = user.name,
-                username = user.username,
+                username = user.username!!,
                 password = hashPassword(user.password!!),
+                job = user.job,
                 picture = user.picture
         ))
         return ResponseEntity(HttpStatus.CREATED)
+    }
+
+    /**
+     * Update a new user.
+     * @param userUpdate: UserDTO
+     * @return ResponseEntity
+     */
+    @PutMapping("/update")
+    fun update(@RequestBody userUpdate: UserDTO): ResponseEntity<Any> {
+
+        val existinUser : User = userService!!.loadUserById(userUpdate.id!!)
+        existinUser.job = userUpdate.job
+        existinUser.name = userUpdate.name
+        existinUser.picture = userUpdate.picture
+        existinUser.team = teamService!!.finByid(userUpdate.team!!.id!!)
+
+        userService!!.update(existinUser)
+        return ResponseEntity(HttpStatus.OK)
     }
 
     /**
@@ -88,13 +109,23 @@ class AuthController {
      * @return ResponseEntity<UserDTO>
      */
     @GetMapping("/profile")
-    fun profile( @RequestHeader("Authorization") jwt: String ): ResponseEntity<UserDTO> {
+    fun profile(@RequestHeader("Authorization") jwt: String): ResponseEntity<UserDTO> {
         val user: User = userService!!.getProfile(jwt)
         return ResponseEntity(UserDTO(
                 id = user.id,
                 name = user.name,
                 username = user.username,
                 picture = user.picture,
+                team = TeamDTO(
+                        user.team!!.id,
+                        user.team!!.name,
+                        user.team!!.description,
+                        user.team!!.game,
+                        user.team!!.ubication,
+                        user.team!!.email,
+                        user.team!!.organization!!.id
+                ),
+                job = user.job,
                 password = null
         ), HttpStatus.OK)
     }
