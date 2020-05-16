@@ -57,7 +57,7 @@ class AuthTests {
 
     @Test
     fun authSuccess() {
-        val credentials = LoginRequest(username = "test123", password = "admin123")
+        val credentials = LoginRequest(username = "cbalcazar", password = "112233")
         mvc!!.perform(
                 MockMvcRequestBuilders
                         .post("${Constants.URL_BASE_AUTH}/token")
