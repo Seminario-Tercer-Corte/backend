@@ -10,6 +10,12 @@ class Constants {
         const val  URL_BASE_AUTH = "$URL_BASE/auth"
         const val  URL_BASE_USERS = "$URL_BASE/users"
 
+        //Base API endpint para equipos
+        const val  URL_BASE_TEAMS = "$URL_BASE/teams"
+
+        //Base API endpint para organizaciones
+        const val  URL_BASE_ORGANIZATIONS = "$URL_BASE/organizations"
+
 
         //Messages
         const val MESSAGE_USER_NOT_FOUND = "No se encontró el usuario"
