@@ -59,7 +59,7 @@ class AuthTests {
 
     @Test
     fun authSuccess() {
-        val credentials = LoginRequest(username = "cbalcazar", password = "112233")
+        val credentials = LoginRequest(username = "test123", password = "admin123")
         mvc!!.perform(
                 MockMvcRequestBuilders
                         .post("${Constants.URL_BASE_AUTH}/token")
@@ -110,7 +110,7 @@ class AuthTests {
         val user = UserDTO(
                 id = null,
                 name = "Test",
-                username = "test452",
+                username = "test123",
                 password = "user123",
                 picture = null,
                 job = "Lider",
@@ -141,7 +141,7 @@ class AuthTests {
     fun profile() {
         val token = jwtTokenUtil!!.generateToken(User(
                 name = "Test",
-                username = "test452",
+                username = "test123",
                 password = "user123",
                 picture = null,
                 job = "Lider"
