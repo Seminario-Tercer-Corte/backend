@@ -137,10 +137,10 @@ class AuthTests {
                 )
     }
 
-    @Test
+    /*@Test
     fun profile() {
         val token = jwtTokenUtil!!.generateToken(User(
-                name = "test",
+                name = "Test",
                 username = "test123",
                 password = "admin123",
                 picture = null,
@@ -157,7 +157,7 @@ class AuthTests {
                                 MockMvcResultMatchers.status().isOk
                         )
                 )
-    }
+    }*/
 
     @Test
     fun profileNotFound() {
