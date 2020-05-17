@@ -1,4 +1,9 @@
 package com.seminario.api.dto
 
-class OrganizationDTO {
-}
+data class OrganizationDTO(
+        var id: Long?,
+        var name: String,
+        var description: String,
+        var email: String,
+        var ubication: String
+)
