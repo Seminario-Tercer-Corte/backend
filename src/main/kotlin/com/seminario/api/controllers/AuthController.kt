@@ -86,6 +86,50 @@ class AuthController {
     }
 
     /**
+     * Login with Google.
+     * @param user: UserDTO
+     * @return ResponseEntity
+     */
+    @PostMapping("/google")
+    fun loginWithGoogle(@RequestBody user: UserDTO): ResponseEntity<Any> {
+        if (userService!!.userByUsername(user.username!!).isEmpty) {
+            userService!!.save(User(
+                    name = user.name,
+                    username = user.username!!,
+                    password = hashPassword(user.password!!),
+                    job = user.job,
+                    picture = user.picture
+            ))
+        }
+        try {
+            authManager!!.authenticate(
+                    UsernamePasswordAuthenticationToken(
+                            user.username,
+                            user.password
+                    )
+            )
+        } catch (e: Exception) {
+            throw BadCredentials(
+                    Constants.MESSAGE_BAD_CREDENTIALS
+            )
+        }
+
+        val userDetails: User = userService!!
+                .loadUserByUsername(user.username!!)
+        val accessToken: String? = jwtTokenUtil!!
+                .generateToken(userDetails)
+
+        return ResponseEntity(
+                LoginResponse(
+                        accessToken = accessToken!!,
+                        role = userDetails.roles?.get(0)?.name!!,
+                        scopes = userDetails.getScopes()
+                ),
+                HttpStatus.OK
+        )
+    }
+
+    /**
      * Update a new user.
      * @param userUpdate: UserDTO
      * @return ResponseEntity

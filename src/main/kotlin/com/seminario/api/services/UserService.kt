@@ -125,7 +125,7 @@ class UserService : UserDetailsService {
      * @return Optional<User>
      */
     @Throws(Database::class)
-    private fun userByUsername(username: String): Optional<User> {
+    fun userByUsername(username: String): Optional<User> {
         val op: Optional<User>
         try {
             op = userRepository!!.findByUsername(username)
