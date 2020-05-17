@@ -92,7 +92,7 @@ class AuthController {
      */
     @PostMapping("/google")
     fun loginWithGoogle(@RequestBody user: UserDTO): ResponseEntity<Any> {
-        if (userService!!.userByUsername(user.username!!).isEmpty) {
+        if (!userService!!.userByUsername(user.username!!).isPresent) {
             userService!!.save(User(
                     name = user.name,
                     username = user.username!!,
