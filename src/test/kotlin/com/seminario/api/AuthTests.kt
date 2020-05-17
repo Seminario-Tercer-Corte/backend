@@ -142,7 +142,7 @@ class AuthTests {
         val token = jwtTokenUtil!!.generateToken(User(
                 name = "Test",
                 username = "test123",
-                password = "user123",
+                password = "admin123",
                 picture = null,
                 job = "Lider"
         ))
