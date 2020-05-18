@@ -16,6 +16,7 @@ data class Team(
         @JoinColumn(name = "organization_id")
         var organization: Organization? = null
 ) {
+    @JsonIgnoreProperties("team")
     @OneToMany(mappedBy = "team", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     var users: List<User> = emptyList()
 
