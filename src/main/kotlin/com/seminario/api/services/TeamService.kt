@@ -4,6 +4,7 @@ import com.seminario.api.dto.TeamDTO
 import com.seminario.api.exceptions.AlreadyExists
 import com.seminario.api.exceptions.Database
 import com.seminario.api.models.Team
+import com.seminario.api.models.User
 import com.seminario.api.repositories.OrganizationRepository
 import com.seminario.api.repositories.TeamRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -79,6 +80,20 @@ class TeamService {
     fun finByid(id: Long): Team {
         try {
             return teamRepository!!.findById(id).get()
+        } catch (e: Exception) {
+            throw Database(e.message)
+        }
+    }
+
+    /**
+     * Find Users by Team
+     * @throws AlreadyExists
+     * @throws Database
+     */
+    @Throws(Database::class, AlreadyExists::class)
+    fun users(id: Long): List<User> {
+        try {
+            return teamRepository!!.findById(id).get().users
         } catch (e: Exception) {
             throw Database(e.message)
         }

@@ -4,6 +4,7 @@ import com.seminario.api.dto.OrganizationDTO
 import com.seminario.api.dto.TeamDTO
 import com.seminario.api.models.Organization
 import com.seminario.api.models.Team
+import com.seminario.api.models.User
 import com.seminario.api.services.OrganizationService
 import com.seminario.api.services.TeamService
 import com.seminario.api.utils.Constants
@@ -67,6 +68,15 @@ class TeamController {
     @GetMapping("/{id}")
     fun findTeam(@PathVariable(value = "id") TeamId: Long): ResponseEntity<Team> {
         return ResponseEntity(teamService!!.finByid(TeamId), HttpStatus.OK)
+    }
+
+    /**
+     * Get Users By Team
+     * @return ResponseEntity
+     */
+    @GetMapping("/{id}/users")
+    fun findUsers(@PathVariable(value = "id") TeamId: Long): ResponseEntity<List<User>> {
+        return ResponseEntity(teamService!!.users(TeamId), HttpStatus.OK)
     }
 
     /**
